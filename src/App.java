@@ -1,6 +1,4 @@
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,47 +6,41 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
-        
+         
+      List<shape> list = new ArrayList<>();
 
-        List <product> pd = new ArrayList<>();
+       System.out.print("Enter the number of shapes:");
+       int n = sc.nextInt();        
 
-        System.out.print("Enter the number of products:");
-        int n = sc.nextInt();
+       for (int i = 0; i < n; i++) {
+    System.out.println("Shape #"+(i+1)+ "data:");
+    System.out.print("Rectangle or Circle (r/c)?");
+    char code = sc.next().charAt(0);
+    System.out.print("Color (BLACK/BLUE/RED):");
+    sc.nextLine();
+  color colo = color.valueOf(sc.next());
 
-    for (int i = 0; i<n; i++) {
-            System.out.println("Product #" + (i+1) + " data:");
-            System.out.print("Common, used or imported (c/u/i)?");
-            char code = sc.next().charAt(0);
-            System.out.print("name:");
-            sc.nextLine();
-            String name = sc.nextLine();
-            System.out.print("price: ");
-            Double price = sc.nextDouble();
-            switch (code) {
-                case 'i' :
-                System.out.print("Customs fee: ");
-                Double fret = sc.nextDouble();
-
-                pd.add(new productImported(name, price, fret));
-                     
-                    break;
-                case 'u' :
-                  System.out.print("Manufacture date (DD/MM/YYYY):");
-                  LocalDate manufatureDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                  pd.add(new usedProduct(name, price, manufatureDate));
-                 break;
-
-                default:
-                  pd.add(new product(name, price));
-
-                   
-            }
+    switch (code) {
+        case 'r':
+        System.out.print("widh: ");
+        Double widh = sc.nextDouble();
+        System.out.print("heigth: ");
+        Double heigth = sc.nextDouble();
+        list.add(new rectagle(widh, heigth, colo ));
+            
+            break;
+        default:
+        System.out.println("radio: ");
+        Double radio = sc.nextDouble();
+        list.add(new circle(radio, colo));
+          
     }
-    System.out.println("");
-    System.out.println("PRICE TAGS:");
-    for(product c : pd) {
-        System.out.println(c.priceTag());
-    }            
+   
+    }
+    System.out.print("SHAPE AREAS:");
+    for (shape c : list) {
+        System.out.println(String.format("%.2f", c.area()));
+       }
 
     }
 }
