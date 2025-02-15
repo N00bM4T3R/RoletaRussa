@@ -1,42 +1,87 @@
 
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Scanner;
+
+
 
 public class App {
-    public static void main(String[] args)  {
-        Scanner sc = new Scanner(System.in);
-         Locale.setDefault(Locale.US);
-      try {
 
-         System.out.println("Enter account data");
-         System.out.print("Number: ");
-          int number = sc.nextInt();
-          System.out.print("Holder: ");
-          sc.nextLine();
-          String holder = sc.nextLine();
-          System.out.print("Initial balance: ");
-          Double balance = sc.nextDouble();
-          System.out.print("Withdraw limit: ");
-          Double whitDrawLimit = sc.nextDouble();
+	public static void main(String[] args) throws ParseException {
 
-          Account acc = new Account(balance, holder, number, whitDrawLimit);
-          System.out.print("Enter amount for withdraw:");
-          Double amount = sc.nextDouble();
-          acc.Withdraw(amount);
-          System.out.println(acc.toString());
-         
-      }
-
-      catch(DomainException e) {
-         System.out.println("Withdraw error: The amount exceeds withdraw limit");
-      }
-      catch(RuntimeException e ) {
-         System.out.println("Unexplicable erro");
-      }
-
-      }
-      }
-
+		Locale.setDefault(Locale.US);
       
-    
+		String strPath = "C:\\Games\\program\\produtos.txt";
 
+	   File file = new File(strPath);
+	   String StrParente = file.getParent();
+
+	   List<Product> listpd = new ArrayList<>();
+
+	  
+	  
+
+	   try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+		    String line = br.readLine();
+			
+			while (line != null) {
+				String[] fields = line.split(",");
+				String name = fields[0];
+				Double price = Double.parseDouble(fields[1]);
+				Integer quantity = Integer.parseInt(fields[2]);
+
+				listpd.add(new Product(name, price, quantity));
+				line = br.readLine();
+
+			}
+	  
+		
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+
+		boolean success = new File(StrParente + "\\out").mkdir();
+		String path2 = StrParente + "\\out" + "\\Sumarry.txt";
+
+
+
+
+		try(BufferedWriter bw = new BufferedWriter( new FileWriter(path2))) {
+
+
+                
+			for (Product list : listpd) {
+				bw.write(list.getName() + ", " + list.totalPrice());
+				bw.newLine();
+                
+
+
+			}
+
+
+		} catch(IOException e) {
+			System.out.println(e.getMessage());
+		}
+
+
+
+
+
+
+		
+		
+		
+
+
+
+	}
+}
