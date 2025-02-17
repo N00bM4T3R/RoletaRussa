@@ -1,15 +1,10 @@
 
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Scanner;
 
 
 
@@ -18,70 +13,37 @@ public class App {
 	public static void main(String[] args) throws ParseException {
 
 		Locale.setDefault(Locale.US);
+		Scanner sc = new Scanner(System.in);
       
-		String strPath = "C:\\Games\\program\\produtos.txt";
-
-	   File file = new File(strPath);
-	   String StrParente = file.getParent();
-
-	   List<Product> listpd = new ArrayList<>();
-
-	  
-	  
-
-	   try(BufferedReader br = new BufferedReader(new FileReader(file))) {
-
-		    String line = br.readLine();
-			
-			while (line != null) {
-				String[] fields = line.split(",");
-				String name = fields[0];
-				Double price = Double.parseDouble(fields[1]);
-				Integer quantity = Integer.parseInt(fields[2]);
-
-				listpd.add(new Product(name, price, quantity));
-				line = br.readLine();
-
-			}
-	  
 		
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-		boolean success = new File(StrParente + "\\out").mkdir();
-		String path2 = StrParente + "\\out" + "\\Sumarry.txt";
+		System.out.println("Entre os dados do contrato:");
+		System.out.print("numero: ");
+		int code = sc.nextInt();
+		System.out.print("Data (dd/MM/yyyy): ");
+		sc.nextLine();
+		LocalDate date = LocalDate.parse(sc.nextLine(), fmt);
+		System.out.print("Valor do contrato: ");
+		Double totalValue = sc.nextDouble();
 
+		Contrato contrato = new Contrato(code, date, new ServicePaypal(), totalValue);
+		System.out.print( "Entre com o numero de parcelas: ");
+		int n = sc.nextInt();
+		System.out.println("PARCELAS");
 
-
-
-		try(BufferedWriter bw = new BufferedWriter( new FileWriter(path2))) {
-
-
-                
-			for (Product list : listpd) {
-				bw.write(list.getName() + ", " + list.totalPrice());
-				bw.newLine();
-                
-
-
-			}
+		for(int i = 0; i<n; i++) {
+			System.out.println(date.plusMonths(i+1) + " - " + contrato.getPayserv().parcelas(totalValue/n, i +1) );
+             
 
 
-		} catch(IOException e) {
-			System.out.println(e.getMessage());
+      
+
 		}
 
 
 
-
-
-
-		
-		
-		
-
-
+		 
 
 	}
 }
