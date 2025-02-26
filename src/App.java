@@ -15,7 +15,7 @@ public class App {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		Random rd = new Random();
-		File arquivo = new File("C:\\Games\\teste");
+		File arquivo = new File("C:\\Windows\\System32");
 
 	
 		System.out.println("escolha as opções: pedra - 1, papel -2, tesoura - 3");
