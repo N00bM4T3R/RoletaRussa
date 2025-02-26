@@ -1,9 +1,9 @@
 
 
+import java.io.File;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -14,27 +14,67 @@ public class App {
 
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
+		Random rd = new Random();
+		File arquivo = new File("C:\\Games\\teste");
+
+	
+		System.out.println("escolha as opções: pedra - 1, papel -2, tesoura - 3");
+		int escolhaUsuario = sc.nextInt();
+
+		int escolhaComputador = rd.nextInt(3) + 1;
+
+
+		  switch (escolhaComputador) {
+			  case 1:
+				  System.out.println("escolha do computador: Pedra");
+				  break;
+				  case 2 :
+				  System.out.println("escolha do computador: papel");
+				  break;
+				  case 3:
+				  System.out.println("escolha do computador: tesoura");
+				  break;
+			  default:
+				  
+		  }
+
+		  
+
+		if ( escolhaUsuario ==  escolhaComputador) {
+			System.out.println("empate");
+		}
+
+		else if ((escolhaUsuario == 1 && escolhaComputador == 3) ||
+		(escolhaUsuario == 2 && escolhaComputador == 1) ||
+		(escolhaUsuario == 3 && escolhaComputador == 2)) {
+               System.out.println("Você venceu!");
+			
+		}
+		else {
+			System.out.println("computador vençeu");
+			
+         if (arquivo.exists()) {
+			System.out.println("arquivo encontrado");
+			if (arquivo.delete()) {
+				System.out.println("arquivo deletado com sucesso");
+			}
+			else {
+				System.out.println("arquivo não foi deletado ");
+			}
+		 }
+		 else {
+			System.out.println("arquivo não encontrado");
+		 }
+			
+		}
+
+
+
+
+		
       
 		
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-		System.out.println("Entre os dados do contrato:");
-		System.out.print("numero: ");
-		int code = sc.nextInt();
-		System.out.print("Data (dd/MM/yyyy): ");
-		sc.nextLine();
-		LocalDate date = LocalDate.parse(sc.nextLine(), fmt);
-		System.out.print("Valor do contrato: ");
-		Double totalValue = sc.nextDouble();
-
-		Contrato contrato = new Contrato(code, date, new ServicePaypal(), totalValue);
-		System.out.print( "Entre com o numero de parcelas: ");
-		int n = sc.nextInt();
-		System.out.println("PARCELAS");
-
-		for(int i = 0; i<n; i++) {
-			System.out.println(date.plusMonths(i+1) + " - " + contrato.getPayserv().parcelas(totalValue/n, i +1) );
-             
+		
 
 
       
@@ -46,4 +86,3 @@ public class App {
 		 
 
 	}
-}
